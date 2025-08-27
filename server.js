@@ -43,9 +43,13 @@ app.post('/login', (req, res) => {
     })
 });
 
-app.get("/Expense",(req,res)=>{
-
-})
+app.get("/Expense", (req, res) => {
+    const sql = "SELECT * FROM expense";
+    con.query(sql, (err, results) => {
+        if (err) return res.status(500).send("DB error: " + err.message);
+        res.json(results);
+    });
+});
 
 app.get("/ExpenseToday",(req,res)=>{
     
