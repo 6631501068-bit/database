@@ -76,9 +76,14 @@ app.post("/AddnewExpense", (req, res) => {
     });
 });
 
-app.delete("/DeleteAnExpense",(req,res)=>{
-    
-})
+app.delete("/DeleteAnExpense/:id", (req, res) => {
+    const { id } = req.params;
+    const sql = "DELETE FROM expense WHERE id = ?";
+    con.query(sql, [id], (err, result) => {
+        if (err) return res.status(500).send("DB error: " + err.message);
+        res.send("Expense deleted!");
+    });
+});
 
 // ---------- Server starts here ---------
 const PORT = 3000;
