@@ -67,9 +67,14 @@ app.get("/SearchExpense", (req, res) => {
         res.json(results);
     });
 });
-app.post("/AddnewExpense",(req,res)=>{
-    
-})
+app.post("/AddnewExpense", (req, res) => {
+    const { item, paid, date } = req.body;
+    const sql = "INSERT INTO expense (item, paid, date) VALUES (?, ?, ?)";
+    con.query(sql, [item, paid, date], (err, result) => {
+        if (err) return res.status(500).send("DB error: " + err.message);
+        res.send("Expense added!");
+    });
+});
 
 app.delete("/DeleteAnExpense",(req,res)=>{
     
