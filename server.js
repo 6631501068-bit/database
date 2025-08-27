@@ -28,13 +28,13 @@ app.post('/login', (req, res) => {
         if(results.length != 1) {
             return res.status(401).send("Wrong username");
         }
-        // compare passwords
         bcrypt.compare(password, results[0].password, function(err, same) {
             if(err) {
-                return res.status(500).send("Hashing error");   
+                return res.status(500).send("Hashing error");
             }
             if(same) {
-                return res.send("Login OK");
+                // ✅ ส่ง userId กลับไปด้วย
+                return res.json({ message: "Login OK", userId: results[0].id });
             }
             return res.status(401).send("Wrong password");
         });
@@ -71,9 +71,9 @@ app.get("/SearchExpense", (req, res) => {
 
 // add new expense
 app.post("/AddnewExpense", (req, res) => {
-    const { item, paid, date } = req.body;
-    const sql = "INSERT INTO expense (item, paid, date) VALUES (?, ?, ?)";
-    con.query(sql, [item, paid, date], (err, result) => {
+    const { item, paid, date, user_id } = req.body;
+    const sql = "INSERT INTO expense (item, paid, date, user_id) VALUES (?, ?, ?, ?)";
+    con.query(sql, [item, paid, date, user_id], (err, result) => {
         if (err) return res.status(500).send("DB error: " + err.message);
         res.send("Expense added!");
     });
