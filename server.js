@@ -51,9 +51,13 @@ app.get("/Expense", (req, res) => {
     });
 });
 
-app.get("/ExpenseToday",(req,res)=>{
-    
-})
+app.get("/ExpenseToday", (req, res) => {
+    const sql = "SELECT * FROM expense WHERE DATE(date) = CURDATE()";
+    con.query(sql, (err, results) => {
+        if (err) return res.status(500).send("DB error: " + err.message);
+        res.json(results);
+    });
+});
 
 app.get("/SearchExpense",(req,res)=>{
     
