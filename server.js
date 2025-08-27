@@ -59,10 +59,14 @@ app.get("/ExpenseToday", (req, res) => {
     });
 });
 
-app.get("/SearchExpense",(req,res)=>{
-    
-})
-
+app.get("/SearchExpense", (req, res) => {
+    const keyword = "%${req.query.q || ''}%";
+    const sql = "SELECT * FROM expense WHERE item LIKE ?";
+    con.query(sql, [keyword], (err, results) => {
+        if (err) return res.status(500).send("DB error: " + err.message);
+        res.json(results);
+    });
+});
 app.post("/AddnewExpense",(req,res)=>{
     
 })
